@@ -4,6 +4,8 @@ import { PrismaModule } from './prisma/prisma.module';
 import { ProductsModule } from './products/products.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { CartService } from './cart/cart.service';
+import { CartModule } from './cart/cart.module';
 
 @Module({
     imports: [
@@ -18,8 +20,9 @@ import { AuthModule } from './auth/auth.module';
         PrismaModule,
         ProductsModule,
         UsersModule,
+        CartModule,
     ],
     controllers: [],
-    providers: [],
+    providers: [CartService],
 })
 export class AppModule {}

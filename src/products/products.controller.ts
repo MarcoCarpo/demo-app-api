@@ -1,7 +1,7 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
-import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ProductEntity } from './entities/product.entity';
 
 @Controller('products')
@@ -14,6 +14,14 @@ export class ProductsController {
     async create(@Body() createProductDto: CreateProductDto) {
         return new ProductEntity(
             await this.productsService.create(createProductDto),
+        );
+    }
+
+    @Get()
+    @ApiOkResponse({ type: ProductEntity, isArray: true })
+    async findAll() {
+        return (await this.productsService.findAll()).map(
+            (product) => new ProductEntity(product),
         );
     }
 
