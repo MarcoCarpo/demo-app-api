@@ -1,8 +1,14 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+    ApiBearerAuth,
+    ApiCreatedResponse,
+    ApiOkResponse,
+    ApiTags,
+} from '@nestjs/swagger';
 import { ProductEntity } from './entities/product.entity';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('products')
 @ApiTags('products')
@@ -11,6 +17,8 @@ export class ProductsController {
 
     @Post()
     @ApiCreatedResponse({ type: ProductEntity })
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth()
     async create(@Body() createProductDto: CreateProductDto) {
         return new ProductEntity(
             await this.productsService.create(createProductDto),
