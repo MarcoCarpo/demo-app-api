@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Product } from '@prisma/client';
+import { Image, Product } from '@prisma/client';
+import { Exclude } from 'class-transformer';
 
 export class ProductEntity implements Product {
     @ApiProperty()
@@ -14,8 +15,8 @@ export class ProductEntity implements Product {
     @ApiProperty()
     price: number;
 
-    @ApiProperty()
-    images: number[];
+    @Exclude()
+    imageId: number;
 
     @ApiProperty()
     categoryId: number;
@@ -29,7 +30,14 @@ export class ProductEntity implements Product {
     @ApiProperty({ required: false, nullable: true })
     userId: number | null;
 
+    @Exclude()
+    Image: Image;
+
+    @ApiProperty()
+    image: Image;
+
     constructor(data: Partial<ProductEntity>) {
         Object.assign(this, data);
+        this.image = data.Image;
     }
 }

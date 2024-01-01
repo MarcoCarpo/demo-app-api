@@ -6,6 +6,7 @@ import { SearchProductsDto } from './dto/search-product.dto';
 import { createPaginator } from 'prisma-pagination';
 import { Prisma } from '@prisma/client';
 import { ProductWithCategoryEntity } from './entities/product-with-category.entity';
+import { ProductWithCategoryNameEntity } from './entities/product-with-category-name.entity';
 
 @Injectable()
 export class ProductsService {
@@ -47,32 +48,40 @@ export class ProductsService {
             }
         };
 
-        return paginate<ProductWithCategoryEntity, Prisma.ProductFindManyArgs>(
-            this.prisma.product,
-            {
-                orderBy: orderBy(),
-                skip: page * limit,
-                take: limit,
-                where: {
-                    ProductCategory: {
-                        id: {
-                            in: categoryIds,
-                        },
-                    },
-                    price: {
-                        gte: minPrice,
-                        lte: maxPrice,
+        const paginatedProducts = await paginate<
+            ProductWithCategoryEntity,
+            Prisma.ProductFindManyArgs
+        >(this.prisma.product, {
+            orderBy: orderBy(),
+            skip: page * limit,
+            take: limit,
+            where: {
+                ProductCategory: {
+                    id: {
+                        in: categoryIds,
                     },
                 },
-                include: {
-                    ProductCategory: {
-                        select: {
-                            name: true,
-                        },
-                    },
+                price: {
+                    gte: minPrice,
+                    lte: maxPrice,
                 },
             },
-        );
+            include: {
+                ProductCategory: {
+                    select: {
+                        name: true,
+                    },
+                },
+                Image: true,
+            },
+        });
+
+        return {
+            data: paginatedProducts.data.map(
+                (product) => new ProductWithCategoryNameEntity(product),
+            ),
+            meta: paginatedProducts.meta,
+        };
     }
 
     async findOne(id: number) {

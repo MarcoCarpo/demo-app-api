@@ -10,6 +10,7 @@ export class CartSessionItemEntity implements Product {
     createdAt: Date;
     updatedAt: Date;
     quantity: number;
+    imageId: number;
 
     constructor(partial: Partial<CartSessionItemEntity>) {
         Object.assign(this, partial);

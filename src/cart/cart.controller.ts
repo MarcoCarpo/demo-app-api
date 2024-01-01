@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
-import { ApiOkResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiOkResponse, ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CartService } from './cart.service';
@@ -7,6 +7,7 @@ import { CreateCartDto } from './dto/create-cart.dto';
 import { CartSessionItemEntity } from './entities/cart-session-item.entity';
 
 @Controller('cart')
+@ApiTags('cart')
 export class CartController {
     constructor(private readonly cartService: CartService) {}
 

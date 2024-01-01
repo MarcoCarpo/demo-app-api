@@ -1,7 +1,12 @@
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
-import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import {
+    ApiBearerAuth,
+    ApiCreatedResponse,
+    ApiOkResponse,
+    ApiTags,
+} from '@nestjs/swagger';
 import { ProductEntity } from './entities/product.entity';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { SearchProductsDto } from './dto/search-product.dto';
@@ -23,15 +28,9 @@ export class ProductsController {
     }
 
     @Post('/search')
+    @ApiOkResponse({ type: ProductWithCategoryNameEntity })
     async findAll(@Body() body: SearchProductsDto) {
-        const products = await this.productsService.findAll(body);
-
-        return {
-            data: products.data.map(
-                (product) => new ProductWithCategoryNameEntity(product),
-            ),
-            meta: products.meta,
-        };
+        return this.productsService.findAll(body);
     }
 
     // @Get(':id')

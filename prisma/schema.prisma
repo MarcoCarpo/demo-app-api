@@ -20,10 +20,12 @@ model User {
   zipCode      String       @default("")
   country      String       @default("")
   cartSession  CartSession?
+  imageId      Int?
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
   refreshToken String?
   role         UserRole     @default(USER)
+  Image        Image?       @relation(fields: [imageId], references: [id])
 }
 
 enum UserRole {
@@ -55,16 +57,31 @@ model Product {
   description     String
   price           Float
   categoryId      Int
+  imageId         Int?
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
   ProductCategory ProductCategory?  @relation(fields: [categoryId], references: [id])
   cartItems       CartSessionItem[]
+  Image           Image?            @relation(fields: [imageId], references: [id])
 }
 
 model ProductCategory {
   id        Int       @id @default(autoincrement())
   name      String
   products  Product[]
+  imageId   Int?
+  Image     Image?    @relation(fields: [imageId], references: [id])
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+}
+
+model Image {
+  id        Int      @id @default(autoincrement())
+  url       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  products   Product[]
+  users      User[]
+  categories ProductCategory[]
 }

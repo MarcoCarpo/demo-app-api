@@ -1,17 +1,22 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
+import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Category } from './entities/category.entity';
 
 @Controller('categories')
+@ApiTags('categories')
 export class CategoriesController {
     constructor(private readonly categoriesService: CategoriesService) {}
 
     @Post()
+    @ApiOkResponse()
     create(@Body() createCategoryDto: CreateCategoryDto) {
         return this.categoriesService.create(createCategoryDto);
     }
 
     @Get()
+    @ApiResponse({ type: Category, isArray: true })
     findAll() {
         return this.categoriesService.findAll();
     }

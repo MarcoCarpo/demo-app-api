@@ -21,7 +21,10 @@ export class UsersService {
     }
 
     findOne(id: number) {
-        return this.prisma.user.findFirstOrThrow({ where: { id: id } });
+        return this.prisma.user.findFirstOrThrow({
+            where: { id: id },
+            include: { Image: true },
+        });
     }
 
     async update(id: number, updateUserDto: UpdateUserDto) {
