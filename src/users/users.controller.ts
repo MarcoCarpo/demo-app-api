@@ -14,6 +14,9 @@ import { UserEntity } from './entities/user.entity';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Request } from 'express';
 import { User } from '@prisma/client';
+import { RoleGuard } from 'src/auth/role.guard';
+import { Roles } from 'src/common/decorators/role.decorator';
+import { Role } from 'src/common/enums/role.enum';
 
 @Controller('user')
 @ApiTags('user')
@@ -21,7 +24,8 @@ export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
     @Get()
-    @UseGuards(JwtAuthGuard)
+    @Roles(Role.USER)
+    @UseGuards(JwtAuthGuard, RoleGuard)
     @ApiOkResponse({ type: UserEntity })
     @ApiBearerAuth()
     async findAll(@Req() req: Request) {

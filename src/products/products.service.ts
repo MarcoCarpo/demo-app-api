@@ -73,32 +73,6 @@ export class ProductsService {
                 },
             },
         );
-
-        // return await this.prisma.product.findMany({
-        //     orderBy: {
-        //         id: 'desc',
-        //     },
-        //     skip: page * limit,
-        //     take: limit,
-        //     where: {
-        //         ProductCategory: {
-        //             id: {
-        //                 in: categoryIds,
-        //             },
-        //         },
-        //         price: {
-        //             gte: minPrice,
-        //             lte: maxPrice,
-        //         },
-        //     },
-        //     include: {
-        //         ProductCategory: {
-        //             select: {
-        //                 name: true,
-        //             },
-        //         },
-        //     },
-        // });
     }
 
     async findOne(id: number) {

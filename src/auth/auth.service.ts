@@ -5,7 +5,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterDto } from './dto/register.dto';
-import { User } from '@prisma/client';
+import { $Enums, User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -76,6 +76,7 @@ export class AuthService {
         const tokens = await this.generateJwtTokens({
             userId: user.id,
             email: user.email,
+            role: user.role,
         });
 
         await this.updateRefreshToken(user.id, tokens.refreshToken);
@@ -98,6 +99,7 @@ export class AuthService {
         const tokens = await this.generateJwtTokens({
             userId: user.id,
             email: user.email,
+            role: user.role,
         });
         await this.updateRefreshToken(user.id, tokens.refreshToken);
 
@@ -123,22 +125,25 @@ export class AuthService {
     private async generateJwtTokens(payload: {
         userId: number;
         email: string;
+        role: $Enums.UserRole;
     }) {
         const [accessToken, refreshToken] = await Promise.all([
             this.jwtService.signAsync(
                 {
                     userId: payload.userId,
                     email: payload.email,
+                    role: payload.role,
                 },
                 {
                     secret: process.env.JWT_SECRET,
-                    expiresIn: '1d',
+                    expiresIn: '1h',
                 },
             ),
             this.jwtService.signAsync(
                 {
                     userId: payload.userId,
                     email: payload.email,
+                    role: payload.role,
                 },
                 {
                     secret: process.env.REFRESH_JWT_SECRET,
