@@ -60,6 +60,10 @@ export class CartService {
     }
 
     async getCart(userId: number) {
+        if (!userId) {
+            return [];
+        }
+
         const cart = await this.prisma.cartSession.findFirst({
             where: { userId },
             include: { items: { include: { product: true } } },

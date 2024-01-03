@@ -35,10 +35,14 @@ export class UsersService {
             );
             updateUserDto.password = hashedPassword;
         }
+        const { address, ...rest } = updateUserDto;
 
         return this.prisma.user.update({
             where: { id: id },
-            data: updateUserDto,
+            data: {
+                ...rest,
+                ...address,
+            },
         });
     }
 

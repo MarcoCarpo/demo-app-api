@@ -24,9 +24,9 @@ export class CartController {
 
     @Get()
     @ApiOkResponse({ type: CartSessionItemEntity, isArray: true })
-    @UseGuards(JwtAuthGuard)
-    @ApiBearerAuth()
+    // @UseGuards(JwtAuthGuard)
+    // @ApiBearerAuth()
     async getCart(@Req() req: Request) {
-        return await this.cartService.getCart(req.user['id']);
+        return await this.cartService.getCart(req?.user?.['id'] || null);
     }
 }

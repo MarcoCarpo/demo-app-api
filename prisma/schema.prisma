@@ -58,6 +58,7 @@ model Product {
   price           Float
   categoryId      Int
   imageId         Int?
+  salePercentage  Int               @default(0)
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
   ProductCategory ProductCategory?  @relation(fields: [categoryId], references: [id])

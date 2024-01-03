@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { Role } from 'src/common/enums/role.enum';
+import { $Enums } from '@prisma/client';
 
 interface IsAuthorizedParams {
-    currentRole: Role;
-    requiredRole: Role;
+    currentRole: $Enums.UserRole;
+    requiredRole: $Enums.UserRole;
 }
 
 @Injectable()
@@ -12,10 +12,10 @@ export class RoleControlService {
     private priority: number = 1;
 
     constructor() {
-        this.buildRoles([Role.GUEST, Role.USER, Role.ADMIN]);
+        this.buildRoles([$Enums.UserRole.ADMIN, $Enums.UserRole.USER]);
     }
 
-    private buildRoles(roles: Role[]) {
+    private buildRoles(roles: $Enums.UserRole[]) {
         const hierarchy: Map<string, number> = new Map();
         roles.forEach((role) => {
             hierarchy.set(role, this.priority);

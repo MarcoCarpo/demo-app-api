@@ -31,4 +31,20 @@ export class CreateUserDto {
     @ApiProperty()
     @IsNotEmpty()
     refreshtoken: string;
+
+    @ApiProperty({
+        type: 'object',
+        properties: {
+            city: { type: 'string' },
+            street: { type: 'string' },
+            country: { type: 'string' },
+            zipcode: { type: 'string' },
+        },
+    })
+    address: {
+        city: string;
+        street: string;
+        country: string;
+        zipcode: string;
+    };
 }

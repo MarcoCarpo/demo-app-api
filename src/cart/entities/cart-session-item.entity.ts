@@ -11,6 +11,8 @@ export class CartSessionItemEntity implements Product {
     updatedAt: Date;
     quantity: number;
     imageId: number;
+    onSale: boolean;
+    salePercentage: number;
 
     constructor(partial: Partial<CartSessionItemEntity>) {
         Object.assign(this, partial);

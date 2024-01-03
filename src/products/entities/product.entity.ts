@@ -19,6 +19,15 @@ export class ProductEntity implements Product {
     imageId: number;
 
     @ApiProperty()
+    salePercentage: number;
+
+    @ApiProperty()
+    priceWithSale: number;
+
+    @ApiProperty()
+    onSale: boolean;
+
+    @ApiProperty()
     categoryId: number;
 
     @ApiProperty()
@@ -39,5 +48,8 @@ export class ProductEntity implements Product {
     constructor(data: Partial<ProductEntity>) {
         Object.assign(this, data);
         this.image = data.Image;
+        this.priceWithSale =
+            data.price - (data.price * data.salePercentage) / 100;
+        this.onSale = data.salePercentage > 0;
     }
 }

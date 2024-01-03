@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+    IsBoolean,
     IsEnum,
     IsNumber,
     IsOptional,
@@ -41,4 +42,9 @@ export class SearchProductsDto {
     @IsOptional()
     @IsEnum(OrderBy)
     orderBy?: string;
+
+    @ApiProperty()
+    @IsBoolean()
+    @IsOptional()
+    isOnSale?: boolean;
 }

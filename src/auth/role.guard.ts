@@ -1,13 +1,13 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from 'src/common/decorators/role.decorator';
-import { Role } from 'src/common/enums/role.enum';
 import { RoleControlService } from './role-control.service';
 import { JwtService } from '@nestjs/jwt';
+import { $Enums } from '@prisma/client';
 
 export class TokenDto {
     id: number;
-    role: Role;
+    role: $Enums.UserRole;
 }
 
 @Injectable()
@@ -19,10 +19,9 @@ export class RoleGuard implements CanActivate {
     ) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
-        const requiredRoles = this.reflector.getAllAndOverride<Role[]>(
-            ROLES_KEY,
-            [context.getHandler(), context.getClass()],
-        );
+        const requiredRoles = this.reflector.getAllAndOverride<
+            $Enums.UserRole[]
+        >(ROLES_KEY, [context.getHandler(), context.getClass()]);
 
         const request = context.switchToHttp().getRequest();
 

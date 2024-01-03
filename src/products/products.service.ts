@@ -24,6 +24,7 @@ export class ProductsService {
             minPrice,
             maxPrice,
             orderBy: orderByParam,
+            isOnSale,
         } = body;
         const paginate = createPaginator({ perPage: limit, page });
 
@@ -65,6 +66,11 @@ export class ProductsService {
                     gte: minPrice,
                     lte: maxPrice,
                 },
+                salePercentage: isOnSale
+                    ? {
+                          gt: 0,
+                      }
+                    : undefined,
             },
             include: {
                 ProductCategory: {
